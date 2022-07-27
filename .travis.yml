@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - 13
+
+services:
+  - docker
+#pre install tests can come in here
+install:
+   - echo "nothing needs to be installed"
+
+before_script:
+  - echo "no tests"
+
+script:
+  - docker --version #print version for logging
+  - docker build -t simple-node-travis .
+  - docker tag simple-node-travis buchessJO/simple-node-travis:latest
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push buchessJO/simple-node-travis
